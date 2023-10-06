@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const { MongoClient } = require("mongodb");
 const PORT = process.env.PORT || 8000;
+const path = require('path')
 
 
 //initialize middleware
@@ -48,5 +49,10 @@ app.post('/api/articles/:name/add-comments', (req,res) => {
     }, res);
 });
 
+//production script
+app.use(express.static("./Blog/build"));
+app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname,"Blog", "build", "index.html" ));
+});
 
 app.listen(PORT, () => console.log(`Server started at port ${PORT}`))
